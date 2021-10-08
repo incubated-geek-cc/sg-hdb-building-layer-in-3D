@@ -1,0 +1,22 @@
+{
+  "name": "sg-hdb-building-layer-in-3D",
+  "version": "1.0.0",
+  "description": "MapBoxGL Geospatial Visualisation of SG HDB Building Layer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "GIS",
+    "MapBoxGL",
+    "WebGL",
+    "data visualisation",
+    "data analytics"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "consolidate": "^0.16.0",
+    "express": "^4.17.1",
+    "mustache": "^4.0.1"
+  }
+}
