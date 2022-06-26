@@ -1,2 +1,149 @@
-<!doctype html><html lang=en><head><title>SG HDB Building Layer in MapBox WebGL</title><meta charset=utf-8><meta name=viewport content="initial-scale=1,maximum-scale=1,user-scalable=no"><link rel="icon" href="img/favicon.ico"><link href=css/mapbox-gl.css rel=stylesheet><script src=js/mapbox-gl.js></script><script src=data/hdb_only.js></script><script src=data/hdb_building_polygons.js></script><script type="text/javascript" src="js/autocomplete.js"></script><script type="text/javascript" src="data/geocoders.js"></script>
-<style>body{margin:0;padding:0}#map{position:absolute;top:0;bottom:0;width:100%}table,td,th,tr{border-collapse:collapse;text-align:left}.pane{padding:0 15px;background:#ccc;line-height:28px;color:#fff;z-index:10;position:absolute;top:20px;left:20px;box-shadow:rgba(0,0,0,.35) 0 5px 15px;font-family:Arial;font-size:11px;color:rgba(0,0,0,.75);text-decoration:none}.custom-attribution{padding:0 2.5px;background-color:#fff;opacity:.75;font-family:Arial;font-size:11px}.custom-attribution a{text-decoration:none}#resetMap{border-radius:50%;padding:3.5px 6.5px;margin:5px 0}.autocomplete-suggestions{font-family:Arial;font-size:11px;text-align:left;cursor:pointer;border:none;border-top:0;background:#fff;box-shadow:-1px 1px 3px rgba(0,0,0,.1);position:absolute;display:none;z-index:9999;max-height:254px;overflow:hidden;overflow-y:auto;box-sizing:border-box}.autocomplete-suggestion{position:relative;padding:.6em;line-height:23px;white-space:nowrap;overflow:hidden;font-family:Arial;font-size:10px;color:#333}.autocomplete-suggestion b{font-weight:400;color:#1f8dd6}.autocomplete-suggestion.selected{background:#f0f0f0}.pure-form{background:0 0;margin:0;padding:0;text-align:center;width:100%}#geocoder{width:100%;min-width:200px;outline:0;margin:2px 1px;padding:2px 1px;font-family:Arial;font-size:10px}</style></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div class="pane"><form onsubmit="return!1" class="pure-form"><table><tr><td><button id="resetMap"><b>↺</b></button></td><td><small>(Reset)</small>&nbsp;&nbsp;</td><td style="font-size:x-large">🧭&nbsp;</td><td><input id="geocoder" autofocus name="q" placeholder="Search Location..."></td></tr></table></form></div><div id=map></div><script>function getBuildingColor(a){var t=(a=(feature=features[f]).properties).RESIDENTIAL,e=a.COMMERCIAL,o=a.MARKET_HAWKER,r=a.MULTISTOREY_CARPARK,l=a.PRECINCT_PAVILION;a.MISCELLANEOUS;return"Y"==t&&"Y"==e?"#34aee4":"Y"==e&&"N"==t?"#255294":"N"==e&&"Y"==t?"#f0c087":"Y"==o?"#e58380":"Y"==r?"#96999a":"Y"==l?"#acb10e":"#fcf66c"}var f,features=hdb_building_polygons.features;for(f in features){let a=getBuildingColor(features[f].properties);hdb_building_polygons.features[f].properties.color=a}function jsonObjToHTMLTable(a){let t="";var e=a.BLK_NO+" "+a.STREET+" S("+a.POSTAL+")",o=a.BUILDING;return t+="<div>",t+="<h4>📍&nbsp;"+e+"</h4><h5><span style='color:"+getBuildingColor(a)+"'>◼</span> "+o+"</h5>",t+="<table>","Y"==a.RESIDENTIAL&&(t+="<tr>",t+="<th>🏠</th>",t+="<td><small>Residential</small></td>",t+="</tr>"),"Y"==a.COMMERCIAL&&(t+="<tr>",t+="<th>🏪</th>",t+="<td><small>Commerical</small></td>",t+="</tr>"),"Y"==a.MARKET_HAWKER&&(t+="<tr>",t+="<th>🍴</th>",t+="<td><small>Market/Hawker Centre</small></td>",t+="</tr>"),"Y"==a.MULTISTOREY_CARPARK&&(t+="<tr>",t+="<th>🚏🚗</th>",t+="<td><small>Multi-Storey Carpark</small></td>",t+="</tr>"),"Y"==a.PRECINCT_PAVILION&&(t+="<tr>",t+="<th>🏡</th>",t+="<td><small>Precint Pavilion</small></td>",t+="</tr>"),(a="Y"==a.MISCELLANEOUS)&&(t+="<tr>",t+="<th>🏢</th>",t+="<td><small>Miscellanous✶</small></td>",t+="</tr>",t+="<tr>",t+='<td colspan="2"><hr><small>✶(E.g. admin office, childcare centre, education centre)</small></td>',t+="</tr>"),t+="</table>",t+="<hr><p style='text-align:right'><small><a href='https://www.buymeacoffee.com/geekcc' target='_blank'>☕ Buy me a coffee!</a></small></p></div>"}for(f in features=hdb_only.features){var feature,featureProps=(feature=features[f]).properties;hdb_only.features[f].properties.description=jsonObjToHTMLTable(featureProps),hdb_only.features[f].properties.icon="dot_annotation"} const southWest=[1.22557,103.67592],northEast=[1.4267,104.02542];const mapCenter=[parseFloat((southWest[1]+northEast[1])/2),parseFloat((southWest[0]+northEast[0])/2)];const defaultPitch=45;const defaultBearing=-17.6;const defaultZoom=14.95;const maxZoom=17;mapboxgl.accessToken="pk.eyJ1IjoiZ2Vlay1jYyIsImEiOiJja3VnZW42cTEyM2RiMm5temVnNjdvOHIyIn0.8-BhfDwt5IfVfXpGaSAtGA";const mapboxMap=new mapboxgl.Map({container:"map",style:"mapbox://styles/mapbox/light-v10",center:mapCenter,zoom:defaultZoom,pitch:defaultPitch,bearing:defaultBearing,antialias:!0});mapboxMap.on("load",()=>{var resetMap=document.getElementById("resetMap");resetMap.onclick=function(){mapboxMap.flyTo({center:mapCenter,zoom:defaultZoom,pitch:defaultPitch,bearing:defaultBearing}),document.getElementById("geocoder").value=""};var geocoder=new autoComplete({selector:"#geocoder",minChars:2,source:function(e,o){e=e.toLowerCase();var t=Object.keys(geocoders),a=[];for(i=0;i<t.length;i++)~t[i].toLowerCase().indexOf(e)&&a.push(t[i]);o(a)},onSelect:function(e,o,t){let a=geocoders[o].split(",");a=[parseFloat(a[1]),parseFloat(a[0])],mapboxMap.flyTo({center:a,zoom:maxZoom,pitch:defaultPitch,bearing:defaultBearing})}});mapboxMap.loadImage("img/invisible_dot.png",(a,t)=>{if(a)throw a;mapboxMap.addImage("dot_annotation",t),mapboxMap.addSource("places",{type:"geojson",data:hdb_only}),mapboxMap.addLayer({id:"places",type:"symbol",source:"places",layout:{"icon-image":"{icon}","icon-allow-overlap":!0}}),mapboxMap.addSource("hdb_blks",{type:"geojson",data:hdb_building_polygons}),mapboxMap.addLayer({id:"hdb-extrusion",type:"fill-extrusion",source:"hdb_blks",paint:{"fill-extrusion-color":["get","color"],"fill-extrusion-height":["get","MAX_STOREY"],"fill-extrusion-opacity":.95}}),mapboxMap.on("click","places",a=>{const t=a.features[0].geometry.coordinates.slice();for(var e=a.features[0].properties.description;180<Math.abs(a.lngLat.lng-t[0]);)t[0]+=a.lngLat.lng>t[0]?360:-360;(new mapboxgl.Popup).setLngLat(t).setHTML(e).addTo(mapboxMap)}),mapboxMap.on("mouseenter","places",()=>{mapboxMap.getCanvas().style.cursor="pointer"}),mapboxMap.on("mouseleave","places",()=>{mapboxMap.getCanvas().style.cursor=""})}),mapboxMap.addControl(new mapboxgl.NavigationControl)});</script></body></html>
+<!DOCTYPE html>
+<html lang='en' class='notranslate' translate='no'>
+      <head>
+        <meta name='google' content='notranslate' />
+        <meta charset='UTF-8'>
+        <meta name='description' content='A Geospatial web application which showcases the HDB building layer of Singapore rendered in 3D via extrusion.'>
+        <meta name='keywords' content='Mapbox,Geospatial,GIS,Extrusion,3D Building,SG,HDB'>
+        <meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1' />  
+        <meta http-equiv='Content-Language' content='en' />
+        <meta name='viewport' content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' />
+        <title>SG HDB Building Layer in MapBox WebGL</title>
+        <link href=css/mapbox-gl.css rel=stylesheet>
+        <script src=js/mapbox-gl.js></script>
+        <script src=data/hdb_only_2022.js></script>
+        <script src=data/hdb_building_polygons_2022.js></script>
+        <script type="text/javascript" src="js/autocomplete.js"></script>
+        <script type="text/javascript" src="data/geocoders.js"></script>
+        <link id='favicon_16x16' rel="icon" href="img/favicon-16x16.ico" type="image/x-icon" sizes="16x16">
+        <link id='favicon_32x32' rel="icon" href="img/favicon-32x32.ico" type="image/x-icon" sizes="32x32">
+        <link id='favicon_48x48' rel="icon" href="img/favicon-48x48.ico" type="image/x-icon" sizes="48x48">
+        <link href=css/custom.css rel=stylesheet>
+      </head>
+    <body>
+      <noscript>You need to enable JavaScript to run this app.</noscript>
+      <div class="pane">
+        <form onsubmit="return!1" class="pure-form">
+          <table>
+            <tr>
+              <td><button id="resetMap" type="button" class="btn btn-sm btn-outline-dark">&nbsp;↺&nbsp;</button></td>
+              <td><small>(Reset)</small></td>
+              <td style="font-size:x-large">&nbsp;&nbsp;🧭&nbsp;</td>
+              <td><input id="geocoder" autofocus name="q" placeholder="Search Location..." class="form-control form-control-sm"></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <div id=map></div>
+      <script>
+        function getBuildingColor(a) {
+          var t = (a = (feature = features[f]).properties).RESIDENTIAL,
+            e = a.COMMERCIAL,
+            o = a.MARKET_HAWKER,
+            r = a.MULTISTOREY_CARPARK,
+            l = a.PRECINCT_PAVILION;
+          a.MISCELLANEOUS;
+          return "Y" == t && "Y" == e ? "#34aee4" : "Y" == e && "N" == t ? "#255294" : "N" == e && "Y" == t ? "#f0c087" : "Y" == o ? "#e58380" : "Y" == r ? "#96999a" : "Y" == l ? "#acb10e" : "#fcf66c"
+        }
+        var f, features = hdb_building_polygons.features;
+        for (f in features) {
+          let a = getBuildingColor(features[f].properties);
+          hdb_building_polygons.features[f].properties.color = a
+        }
+
+        function jsonObjToHTMLTable(a) {
+          let t = "";
+          var e = a.BLK_NO + " " + a.STREET + " S(" + a.POSTAL + ")",
+            o = a.BUILDING;
+          return t += "<div>", t += "<h4>📍&nbsp;" + e + "</h4><h5><span style='color:" + getBuildingColor(a) + "'>◼</span> " + o + "</h5>", t += "<table>", "Y" == a.RESIDENTIAL && (t += "<tr>", t += "<th>🏠</th>", t += "<td><small>Residential</small></td>", t += "</tr>"), "Y" == a.COMMERCIAL && (t += "<tr>", t += "<th>🏪</th>", t += "<td><small>Commerical</small></td>", t += "</tr>"), "Y" == a.MARKET_HAWKER && (t += "<tr>", t += "<th>🍴</th>", t += "<td><small>Market/Hawker Centre</small></td>", t += "</tr>"), "Y" == a.MULTISTOREY_CARPARK && (t += "<tr>", t += "<th>🚏🚗</th>", t += "<td><small>Multi-Storey Carpark</small></td>", t += "</tr>"), "Y" == a.PRECINCT_PAVILION && (t += "<tr>", t += "<th>🏡</th>", t += "<td><small>Precint Pavilion</small></td>", t += "</tr>"), (a = "Y" == a.MISCELLANEOUS) && (t += "<tr>", t += "<th>🏢</th>", t += "<td><small>Miscellanous✶</small></td>", t += "</tr>", t += "<tr>", t += '<td colspan="2"><hr><small>✶(E.g. admin office, childcare centre, education centre)</small></td>', t += "</tr>"), t += "</table>", t += "<hr><p style='text-align:right'><small><a href='https://www.buymeacoffee.com/geekcc' target='_blank'>☕ Buy me a coffee!</a></small></p></div>"
+        }
+        for (f in features = hdb_only.features) {
+          var feature, featureProps = (feature = features[f]).properties;
+          hdb_only.features[f].properties.description = jsonObjToHTMLTable(featureProps), hdb_only.features[f].properties.icon = "dot_annotation"
+        }
+        const southWest = [1.22557, 103.67592],
+          northEast = [1.4267, 104.02542];
+        const mapCenter = [parseFloat((southWest[1] + northEast[1]) / 2), parseFloat((southWest[0] + northEast[0]) / 2)];
+        const defaultPitch = 45;
+        const defaultBearing = -17.6;
+        const defaultZoom = 14.95;
+        const maxZoom = 17;
+        mapboxgl.accessToken = "pk.eyJ1IjoiZ2Vlay1jYyIsImEiOiJja3VnZW42cTEyM2RiMm5temVnNjdvOHIyIn0.8-BhfDwt5IfVfXpGaSAtGA";
+        const mapboxMap = new mapboxgl.Map({
+          container: "map",
+          style: "mapbox://styles/mapbox/light-v10",
+          center: mapCenter,
+          zoom: defaultZoom,
+          pitch: defaultPitch,
+          bearing: defaultBearing,
+          antialias: !0
+        });
+        mapboxMap.on("load", () => {
+          var resetMap = document.getElementById("resetMap");
+          resetMap.onclick = function() {
+            mapboxMap.flyTo({
+              center: mapCenter,
+              zoom: defaultZoom,
+              pitch: defaultPitch,
+              bearing: defaultBearing
+            }), document.getElementById("geocoder").value = ""
+          };
+          var geocoder = new autoComplete({
+            selector: "#geocoder",
+            minChars: 2,
+            source: function(e, o) {
+              e = e.toLowerCase();
+              var t = Object.keys(geocoders),
+                a = [];
+              for (i = 0; i < t.length; i++) ~t[i].toLowerCase().indexOf(e) && a.push(t[i]);
+              o(a)
+            },
+            onSelect: function(e, o, t) {
+              let a = geocoders[o].split(",");
+              a = [parseFloat(a[1]), parseFloat(a[0])], mapboxMap.flyTo({
+                center: a,
+                zoom: maxZoom,
+                pitch: defaultPitch,
+                bearing: defaultBearing
+              })
+            }
+          });
+          mapboxMap.loadImage("img/invisible_dot.png", (a, t) => {
+            if (a) throw a;
+            mapboxMap.addImage("dot_annotation", t), mapboxMap.addSource("places", {
+              type: "geojson",
+              data: hdb_only
+            }), mapboxMap.addLayer({
+              id: "places",
+              type: "symbol",
+              source: "places",
+              layout: {
+                "icon-image": "{icon}",
+                "icon-allow-overlap": !0
+              }
+            }), mapboxMap.addSource("hdb_blks", {
+              type: "geojson",
+              data: hdb_building_polygons
+            }), mapboxMap.addLayer({
+              id: "hdb-extrusion",
+              type: "fill-extrusion",
+              source: "hdb_blks",
+              paint: {
+                "fill-extrusion-color": ["get", "color"],
+                "fill-extrusion-height": ["get", "MAX_HT"],
+                "fill-extrusion-opacity": .95
+              }
+            }), mapboxMap.on("click", "places", a => {
+              const t = a.features[0].geometry.coordinates.slice();
+              for (var e = a.features[0].properties.description; 180 < Math.abs(a.lngLat.lng - t[0]);) t[0] += a.lngLat.lng > t[0] ? 360 : -360;
+              (new mapboxgl.Popup).setLngLat(t).setHTML(e).addTo(mapboxMap)
+            }), mapboxMap.on("mouseenter", "places", () => {
+              mapboxMap.getCanvas().style.cursor = "pointer"
+            }), mapboxMap.on("mouseleave", "places", () => {
+              mapboxMap.getCanvas().style.cursor = ""
+            })
+          }), mapboxMap.addControl(new mapboxgl.NavigationControl)
+        });
+      </script>
+    </body>
+</html>
