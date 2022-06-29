@@ -161,7 +161,7 @@ fieldset:disabled .btn {
 
 #resetMap {
   border-radius: 50%;
-  padding: 3.5px 6.5px;
+  padding: 0.5px 6.5px;
   margin: 5px 0
 }
 
@@ -214,7 +214,7 @@ fieldset:disabled .btn {
 .form-control {
   display: block;
   width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
+  height: calc(1.5em + 0.15rem + 2px);
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 400;
@@ -223,7 +223,7 @@ fieldset:disabled .btn {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+  border-radius: 2px;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
@@ -279,7 +279,7 @@ fieldset:disabled .btn {
   width: 100%;
   min-width: 200px;
   outline: 0;
-  padding: 0;
+  padding: 2.5px 3.0px;
   font-family: Arial;
   font-size: x-small;
 }
