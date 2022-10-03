@@ -9,6 +9,11 @@
   "engines": {
     "node": "16.13.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/incubated-geek-cc/sg-hdb-building-layer-in-3D.git",
+    "directory": "sg-hdb-building-layer-in-3D"
+  },
   "keywords": [
     "GIS",
     "MapBoxGL",
