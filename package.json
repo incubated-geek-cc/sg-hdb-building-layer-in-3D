@@ -4,7 +4,10 @@
   "description": "MapBoxGL Geospatial Visualisation of SG HDB Building Layer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "16.13.0"
   },
   "keywords": [
     "GIS",
@@ -13,7 +16,7 @@
     "data visualisation",
     "data analytics"
   ],
-  "license": "ISC",
+  "author": "geek_cc",
   "dependencies": {
     "consolidate": "^0.16.0",
     "express": "^4.17.1",
