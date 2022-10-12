@@ -8,4 +8,4 @@
 ---
 
 #### MapboxGL Demo
-<img src='https://miro.medium.com/max/1100/1*pVJ8FIPjG55qIgZAClaMAg.gif' width='600px' />
+<img src='https://miro.medium.com/max/1400/1*uZ9_7q6a7bwi1qDwu-fRCw.gif' width='600px' />
