@@ -7,5 +7,5 @@
 
 ---
 
-#### Application Demo
-<br/>![MapboxGL Demo](https://miro.medium.com/max/1100/1*pVJ8FIPjG55qIgZAClaMAg.gif)
+#### MapboxGL Demo
+<img src='https://miro.medium.com/max/1100/1*pVJ8FIPjG55qIgZAClaMAg.gif' width='600px' />
