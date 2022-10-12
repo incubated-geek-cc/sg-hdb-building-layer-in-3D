@@ -5,4 +5,7 @@
 ### Link to application: [sg-hdb-building-layer-in-3D](https://sg-hdb-building-layer-in-3d.onrender.com/)
 ### Backup link at: [sg-hdb-building-layer-in-3D (backup)](https://sg-hdb-building-layer-in-3d.glitch.me/)
 
-![MapboxGL Demo](https://miro.medium.com/max/1100/1*pVJ8FIPjG55qIgZAClaMAg.gif)
+---
+
+#### Application Demo
+<br/>![MapboxGL Demo](https://miro.medium.com/max/1100/1*pVJ8FIPjG55qIgZAClaMAg.gif)
