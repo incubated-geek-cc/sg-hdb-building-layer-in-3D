@@ -3,7 +3,7 @@ const app = express()
 const path = require("path")
 const port = process.env.PORT || 5000
 const engine = require("consolidate");
-
+const compression = require('compression');
 // set up router
 var router = express.Router();
 router.use(
@@ -17,6 +17,8 @@ router.use((req, res, next) => { // router middleware
     next();
 });
 // REGISTER ALL ROUTES -------------------------------
+// Compress all HTTP responses
+app.use(compression());
 app.use("/api", router); // all of the routes will be prefixed with /api
 
 app.use(express.static(path.join(__dirname, "public")))
