@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/incubated-geek-cc/sg-hdb-building-layer-in-3D/raw/main/img/logo.png" width="96" alt="logo">
+  <img src="https://github.com/incubated-geek-cc/sg-hdb-building-layer-in-3D/raw/main/public/img/logo.png" width="96" alt="logo">
 
   # 🏙️ SG HDB Building Layer in 3D
 
