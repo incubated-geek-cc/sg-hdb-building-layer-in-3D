@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/incubated-geek-cc/emoji2image/raw/main/img/logo.png" width="96" alt="logo">
+  <img src="https://github.com/incubated-geek-cc/sg-hdb-building-layer-in-3D/raw/main/img/logo.png" width="96" alt="logo">
 
   # 🏙️ SG HDB Building Layer in 3D
 
@@ -18,7 +18,8 @@
 [**Live Demo :: Backup-Link**](https://sg-hdb-building-layer-in-3d.glitch.me/)
 
 ### ✍ Read related post here
-[**Article :: Link :: Render 3D Buildings in Geospatial WebGL Visualisations*](https://towardsdatascience.com/render-3d-buildings-in-geospatial-webgl-visualisations-c5325eadb347)
+
+[**Article :: Link :: Render 3D Buildings in Geospatial WebGL Visualisations**](https://towardsdatascience.com/render-3d-buildings-in-geospatial-webgl-visualisations-c5325eadb347)
 
 ### 📌 Features
 
