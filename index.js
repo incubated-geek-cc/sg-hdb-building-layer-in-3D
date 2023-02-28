@@ -7,9 +7,7 @@ const compression = require('compression');
 // set up router
 var router = express.Router();
 router.use(
-  express.urlencoded({
-    extended: true
-  })
+  express.urlencoded({ extended: true })
 )
 router.use(express.json())
 router.use((req, res, next) => { // router middleware
@@ -21,6 +19,10 @@ router.use((req, res, next) => { // router middleware
 app.use(compression());
 app.use("/api", router); // all of the routes will be prefixed with /api
 
+router.get("/wake_up", (req, res) => {
+  res.json({"status":"app_is_awake"});
+});
+
 app.use(express.static(path.join(__dirname, "public")))
 	.set("views", path.join(__dirname, "views"))
 	.engine("html", engine.mustache)
@@ -29,7 +31,3 @@ app.use(express.static(path.join(__dirname, "public")))
 	.listen(port, () => {
 		console.log(`Example app listening on port ${port}!`)
 	});
-
-router.get("/wake_up", (req, res) => {
-  res.json({"status":"app_is_awake"});
-});

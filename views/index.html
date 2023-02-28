@@ -11,10 +11,7 @@
         <title>SG HDB Building Layer in MapBox WebGL</title>
         <link href=css/mapbox-gl.css rel=stylesheet>
         <script src=js/mapbox-gl.js></script>
-        <script src=data/hdb_only_2022.js></script>
-        <script src=data/hdb_building_polygons_2022.js></script>
         <script type="text/javascript" src="js/autocomplete.js"></script>
-        <script type="text/javascript" src="data/geocoders.js"></script>
         <link id='favicon_16x16' rel="icon" href="img/favicon-16x16.ico" type="image/x-icon" sizes="16x16">
         <link id='favicon_32x32' rel="icon" href="img/favicon-32x32.ico" type="image/x-icon" sizes="32x32">
         <link id='favicon_48x48' rel="icon" href="img/favicon-48x48.ico" type="image/x-icon" sizes="48x48">
@@ -34,116 +31,165 @@
           </table>
         </form>
       </div>
-      <div id=map></div>
+      <div id='map'></div>
       <script>
-        function getBuildingColor(a) {
-          var t = (a = (feature = features[f]).properties).RESIDENTIAL,
-            e = a.COMMERCIAL,
-            o = a.MARKET_HAWKER,
-            r = a.MULTISTOREY_CARPARK,
-            l = a.PRECINCT_PAVILION;
-          a.MISCELLANEOUS;
-          return "Y" == t && "Y" == e ? "#34aee4" : "Y" == e && "N" == t ? "#255294" : "N" == e && "Y" == t ? "#f0c087" : "Y" == o ? "#e58380" : "Y" == r ? "#96999a" : "Y" == l ? "#acb10e" : "#fcf66c"
-        }
-        var f, features = hdb_building_polygons.features;
-        for (f in features) {
-          let a = getBuildingColor(features[f].properties);
-          hdb_building_polygons.features[f].properties.color = a
-        }
+        if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
+          callback();
+        } else {
+          document.addEventListener('DOMContentLoaded', async() => {
+            console.log('DOMContentLoaded');
 
-        function jsonObjToHTMLTable(a) {
-          let t = "";
-          var e = a.BLK_NO + " " + a.STREET + " S(" + a.POSTAL + ")",
-            o = a.BUILDING;
-          return t += "<div>", t += "<h4>📍&nbsp;" + e + "</h4><h5><span style='color:" + getBuildingColor(a) + "'>◼</span> " + o + "</h5>", t += "<table>", "Y" == a.RESIDENTIAL && (t += "<tr>", t += "<th>🏠</th>", t += "<td><small>Residential</small></td>", t += "</tr>"), "Y" == a.COMMERCIAL && (t += "<tr>", t += "<th>🏪</th>", t += "<td><small>Commerical</small></td>", t += "</tr>"), "Y" == a.MARKET_HAWKER && (t += "<tr>", t += "<th>🍴</th>", t += "<td><small>Market/Hawker Centre</small></td>", t += "</tr>"), "Y" == a.MULTISTOREY_CARPARK && (t += "<tr>", t += "<th>🚏🚗</th>", t += "<td><small>Multi-Storey Carpark</small></td>", t += "</tr>"), "Y" == a.PRECINCT_PAVILION && (t += "<tr>", t += "<th>🏡</th>", t += "<td><small>Precint Pavilion</small></td>", t += "</tr>"), (a = "Y" == a.MISCELLANEOUS) && (t += "<tr>", t += "<th>🏢</th>", t += "<td><small>Miscellanous✶</small></td>", t += "</tr>", t += "<tr>", t += '<td colspan="2"><hr><small>✶(E.g. admin office, childcare centre, education centre)</small></td>', t += "</tr>"), t += "</table>", t += "<hr><p style='text-align:right'><small><a href='https://www.buymeacoffee.com/geekcc' target='_blank'>☕ Buy me a coffee!</a></small></p></div>"
-        }
-        for (f in features = hdb_only.features) {
-          var feature, featureProps = (feature = features[f]).properties;
-          hdb_only.features[f].properties.description = jsonObjToHTMLTable(featureProps), hdb_only.features[f].properties.icon = "dot_annotation"
-        }
-        const southWest = [1.22557, 103.67592],
-          northEast = [1.4267, 104.02542];
-        const mapCenter = [parseFloat((southWest[1] + northEast[1]) / 2), parseFloat((southWest[0] + northEast[0]) / 2)];
-        const defaultPitch = 45;
-        const defaultBearing = -17.6;
-        const defaultZoom = 14.95;
-        const maxZoom = 17;
-        mapboxgl.accessToken = "pk.eyJ1IjoiZ2Vlay1jYyIsImEiOiJja3VnZW42cTEyM2RiMm5temVnNjdvOHIyIn0.8-BhfDwt5IfVfXpGaSAtGA";
-        const mapboxMap = new mapboxgl.Map({
-          container: "map",
-          style: "mapbox://styles/mapbox/light-v10",
-          center: mapCenter,
-          zoom: defaultZoom,
-          pitch: defaultPitch,
-          bearing: defaultBearing,
-          antialias: !0
-        });
-        mapboxMap.on("load", () => {
-          var resetMap = document.getElementById("resetMap");
-          resetMap.onclick = function() {
-            mapboxMap.flyTo({
+            const mapDisplay=document.getElementById('map');
+            const loadingSpinner=document.createElement('div');
+            loadingSpinner.id='loading_gif';
+            loadingSpinner.className='spinner-border';
+            mapDisplay.appendChild(loadingSpinner);
+
+
+            function getBuildingColor(a) {
+              let t = (a = (feature = features[f]).properties).RESIDENTIAL,
+                e = a.COMMERCIAL,
+                o = a.MARKET_HAWKER,
+                r = a.MULTISTOREY_CARPARK,
+                l = a.PRECINCT_PAVILION;
+              a.MISCELLANEOUS;
+              return "Y" == t && "Y" == e ? "#34aee4" : "Y" == e && "N" == t ? "#255294" : "N" == e && "Y" == t ? "#f0c087" : "Y" == o ? "#e58380" : "Y" == r ? "#96999a" : "Y" == l ? "#acb10e" : "#fcf66c"
+            }
+
+            function jsonObjToHTMLTable(a) {
+              let t = "";
+              let e = a.BLK_NO + " " + a.STREET + " S(" + a.POSTAL + ")",
+                o = a.BUILDING;
+              return t += "<div>", t += "<h4>📍&nbsp;" + e + "</h4><h5><span style='color:" + getBuildingColor(a) + "'>◼</span> " + o + "</h5>", t += "<table>", "Y" == a.RESIDENTIAL && (t += "<tr>", t += "<th>🏠</th>", t += "<td><small>Residential</small></td>", t += "</tr>"), "Y" == a.COMMERCIAL && (t += "<tr>", t += "<th>🏪</th>", t += "<td><small>Commerical</small></td>", t += "</tr>"), "Y" == a.MARKET_HAWKER && (t += "<tr>", t += "<th>🍴</th>", t += "<td><small>Market/Hawker Centre</small></td>", t += "</tr>"), "Y" == a.MULTISTOREY_CARPARK && (t += "<tr>", t += "<th>🚏🚗</th>", t += "<td><small>Multi-Storey Carpark</small></td>", t += "</tr>"), "Y" == a.PRECINCT_PAVILION && (t += "<tr>", t += "<th>🏡</th>", t += "<td><small>Precint Pavilion</small></td>", t += "</tr>"), (a = "Y" == a.MISCELLANEOUS) && (t += "<tr>", t += "<th>🏢</th>", t += "<td><small>Miscellanous✶</small></td>", t += "</tr>", t += "<tr>", t += '<td colspan="2"><hr><small>✶(E.g. admin office, childcare centre, education centre)</small></td>', t += "</tr>"), t += "</table>", t += "<hr><p style='text-align:right'><small>🌮 Please buy me a <a href='https://www.buymeacoffee.com/geekcc' target='_blank'>Taco</a>!😋</small></p></div>"
+            }
+
+            const southWest = [1.22557, 103.67592];
+            const northEast = [1.4267, 104.02542];
+            const mapCenter = [parseFloat((southWest[1] + northEast[1]) / 2), parseFloat((southWest[0] + northEast[0]) / 2)];
+            const defaultPitch = 45;
+            const defaultBearing = -17.6;
+            const defaultZoom = 14.95;
+            const maxZoom = 17;
+            mapboxgl.accessToken = "pk.eyJ1IjoiZ2Vlay1jYyIsImEiOiJja3VnZW42cTEyM2RiMm5temVnNjdvOHIyIn0.8-BhfDwt5IfVfXpGaSAtGA";
+            
+
+            const responseOne = await fetch('data/hdb_building_polygons_2022.geojson');
+            const hdb_building_polygons = await responseOne.json();
+
+            var f;
+            var features = hdb_building_polygons.features;
+
+            for (f in features) {
+              let a = getBuildingColor(features[f].properties);
+              hdb_building_polygons.features[f].properties.color = a;
+            }
+
+            const responseTwo = await fetch('data/hdb_only_2022.geojson');
+            const hdb_only = await responseTwo.json();
+
+            for (f in features = hdb_only.features) {
+              var feature, featureProps = (feature = features[f]).properties;
+              hdb_only.features[f].properties.description = jsonObjToHTMLTable(featureProps), hdb_only.features[f].properties.icon = "dot_annotation";
+            }
+
+            const responseThree = await fetch('data/geocoders.json');
+            const geocoders = await responseThree.json();
+
+            mapDisplay.removeChild(loadingSpinner);
+
+            const mapboxMap = new mapboxgl.Map({
+              container: "map",
+              style: "mapbox://styles/mapbox/light-v10",
               center: mapCenter,
               zoom: defaultZoom,
               pitch: defaultPitch,
-              bearing: defaultBearing
-            }), document.getElementById("geocoder").value = ""
-          };
-          var geocoder = new autoComplete({
-            selector: "#geocoder",
-            minChars: 2,
-            source: function(e, o) {
-              e = e.toLowerCase();
-              var t = Object.keys(geocoders),
-                a = [];
-              for (i = 0; i < t.length; i++) ~t[i].toLowerCase().indexOf(e) && a.push(t[i]);
-              o(a)
-            },
-            onSelect: function(e, o, t) {
-              let a = geocoders[o].split(",");
-              a = [parseFloat(a[1]), parseFloat(a[0])], mapboxMap.flyTo({
-                center: a,
-                zoom: maxZoom,
-                pitch: defaultPitch,
-                bearing: defaultBearing
-              })
-            }
-          });
-          mapboxMap.loadImage("img/invisible_dot.png", (a, t) => {
-            if (a) throw a;
-            mapboxMap.addImage("dot_annotation", t), mapboxMap.addSource("places", {
-              type: "geojson",
-              data: hdb_only
-            }), mapboxMap.addLayer({
-              id: "places",
-              type: "symbol",
-              source: "places",
-              layout: {
-                "icon-image": "{icon}",
-                "icon-allow-overlap": !0
-              }
-            }), mapboxMap.addSource("hdb_blks", {
-              type: "geojson",
-              data: hdb_building_polygons
-            }), mapboxMap.addLayer({
-              id: "hdb-extrusion",
-              type: "fill-extrusion",
-              source: "hdb_blks",
-              paint: {
-                "fill-extrusion-color": ["get", "color"],
-                "fill-extrusion-height": ["get", "MAX_HT"],
-                "fill-extrusion-opacity": .95
-              }
-            }), mapboxMap.on("click", "places", a => {
-              const t = a.features[0].geometry.coordinates.slice();
-              for (var e = a.features[0].properties.description; 180 < Math.abs(a.lngLat.lng - t[0]);) t[0] += a.lngLat.lng > t[0] ? 360 : -360;
-              (new mapboxgl.Popup).setLngLat(t).setHTML(e).addTo(mapboxMap)
-            }), mapboxMap.on("mouseenter", "places", () => {
-              mapboxMap.getCanvas().style.cursor = "pointer"
-            }), mapboxMap.on("mouseleave", "places", () => {
-              mapboxMap.getCanvas().style.cursor = ""
-            })
-          }), mapboxMap.addControl(new mapboxgl.NavigationControl)
+              bearing: defaultBearing,
+              antialias: !0
+            });
+
+            
+
+            mapboxMap.on("load", () => {
+              const resetMap = document.getElementById("resetMap");
+              resetMap.onclick = function() {
+                mapboxMap.flyTo({
+                  center: mapCenter,
+                  zoom: defaultZoom,
+                  pitch: defaultPitch,
+                  bearing: defaultBearing
+                }), document.getElementById("geocoder").value = "";
+              };
+              var geocoder = new autoComplete({
+                selector: "#geocoder",
+                minChars: 2,
+                source: function(e, o) {
+                  e = e.toLowerCase();
+                  var t = Object.keys(geocoders),
+                    a = [];
+                  for (i = 0; i < t.length; i++) ~t[i].toLowerCase().indexOf(e) && a.push(t[i]);
+                  o(a)
+                },
+                onSelect: function(e, o, t) {
+                  let a = geocoders[o].split(",");
+                  a = [parseFloat(a[1]), parseFloat(a[0])], mapboxMap.flyTo({
+                    center: a,
+                    zoom: maxZoom,
+                    pitch: defaultPitch,
+                    bearing: defaultBearing
+                  })
+                }
+              });
+              mapboxMap.loadImage("img/invisible_dot.png", (a, t) => {
+                if (a) throw a;
+                mapboxMap.addImage("dot_annotation", t), mapboxMap.addSource("places", {
+                  type: "geojson",
+                  data: hdb_only
+                }), mapboxMap.addLayer({
+                  id: "places",
+                  type: "symbol",
+                  source: "places",
+                  layout: {
+                    "icon-image": "{icon}",
+                    "icon-allow-overlap": !0
+                  }
+                }), mapboxMap.addSource("hdb_blks", {
+                  type: "geojson",
+                  data: hdb_building_polygons
+                }), mapboxMap.addLayer({
+                  id: "hdb-extrusion",
+                  type: "fill-extrusion",
+                  source: "hdb_blks",
+                  paint: {
+                    "fill-extrusion-color": ["get", "color"],
+                    "fill-extrusion-height": ["get", "MAX_HT"],
+                    "fill-extrusion-opacity": .95
+                  }
+                }), mapboxMap.on("click", "places", a => {
+                  const t = a.features[0].geometry.coordinates.slice();
+                  for (var e = a.features[0].properties.description; 180 < Math.abs(a.lngLat.lng - t[0]);) t[0] += a.lngLat.lng > t[0] ? 360 : -360;
+                  (new mapboxgl.Popup).setLngLat(t).setHTML(e).addTo(mapboxMap)
+                }), mapboxMap.on("mouseenter", "places", () => {
+                  mapboxMap.getCanvas().style.cursor = "pointer"
+                }), mapboxMap.on("mouseleave", "places", () => {
+                  mapboxMap.getCanvas().style.cursor = ""
+                })
+              });
+              mapboxMap.addControl(new mapboxgl.NavigationControl);
+
+              
+              mapboxMap.on('render', async() => {
+                await new Promise(resolve => setTimeout(resolve, 10));
+                // console.log('A render event occurred.');
+                const mapboxAttribution = document.querySelector('div.mapboxgl-ctrl-bottom-right div.mapboxgl-ctrl-attrib-inner');
+                mapboxAttribution.children[2].href='https://medium.com/@geek-cc';
+                mapboxAttribution.children[2].title='View Medium Profile';
+                mapboxAttribution.children[2].setAttribute('aria-label','View Medium Profile');
+                mapboxAttribution.children[2].innerText='— Created by ~ ξ(🎀˶❛◡❛) @geek-cc';
+              });
+              
+           });
         });
+      }
       </script>
     </body>
 </html>
