@@ -313,3 +313,18 @@ fieldset:disabled .btn {
   font-family: Arial;
   font-size: x-small;
 }
+.emoji {
+  font-family:Segoe UI Emoji;
+}
+.symbol {
+  font-family:Segoe UI Symbol;
+}
+.unicode {
+  font-family:Cambria;
+}
+.pr-2 {
+  padding-right:2px !important;
+}
+.pl-2 {
+  padding-left:2px !important;
+}
