@@ -190,9 +190,12 @@ fieldset:disabled .btn {
 }
 
 #resetMap {
-  border-radius: 50%;
-  padding: 0.5px 6.5px;
-  margin: 5px 0
+    border-radius: 50%;
+    padding: 0.5px 6.5px;
+    margin: 5px 0;
+    font-size: 1.15rem;
+    height: calc(1.85em - 5px);
+    width: calc(1.85em - 5px);
 }
 
 .autocomplete-suggestions {
@@ -309,9 +312,10 @@ fieldset:disabled .btn {
   width: 100%;
   min-width: 200px;
   outline: 0;
-  padding: 2.5px 3.0px;
+  padding: 2.5px 5.5px;
   font-family: Arial;
-  font-size: x-small;
+  font-size: 1.15em;
+  border-radius: 25px;
 }
 .emoji {
   font-family:Segoe UI Emoji;

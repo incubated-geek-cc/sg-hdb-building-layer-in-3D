@@ -25,7 +25,7 @@
             <tr>
               <td><button id="resetMap" type="button" class="btn btn-sm btn-outline-dark">↺</button></td>
               <td><small>(Reset)</small></td>
-              <td style="font-size:x-large;" class='emoji pr-2 pl-2'>🧭</td>
+              <td style="font-size:calc(1.85em + 5.5px)" class='emoji pr-2 pl-2'>🧭</td>
               <td><input id="geocoder" autofocus name="q" placeholder="Search Location..." class="form-control form-control-sm"></td>
             </tr>
           </table>
@@ -33,9 +33,7 @@
       </div>
       <div id='map'></div>
       <script>
-        if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
-          callback();
-        } else {
+       
           document.addEventListener('DOMContentLoaded', async() => {
             console.log('DOMContentLoaded');
 
@@ -63,7 +61,8 @@
 
               p = a.lease_commence_date;
               return t += "<div>", 
-              t += "<h4 class='emoji' style='white-space:nowrap'>📍 " + e + " <span class='symbol' style='color:" + c + "'>⯀</span></h4><h5><span class='emoji'>📅</span> " + o + " <span class='unicode'>ᵞᵉᵃʳ ᶜᵒᵐᵖˡᵉᵗᵉᵈ</span><br><span class='emoji'>🗓️</span> " + p + " <span class='unicode'>ˡᵉᵃˢᵉ ᶜᵒᵐᵐᵉⁿᶜᵉᵐᵉⁿᵗ</span></h5>", 
+              t += "<h4 class='emoji' style='white-space:nowrap'>📍 " + e + " <span class='symbol' style='color:" + c + "'>■</span></h4><h5><span class='emoji'>📅</span> " + o + " <span class='unicode'>ᵞᵉᵃʳ ᶜᵒᵐᵖˡᵉᵗᵉᵈ</span><br><span class='emoji'>🗓️</span> " + p + " <span class='unicode'>ˡᵉᵃˢᵉ ᶜᵒᵐᵐᵉⁿᶜᵉᵐᵉⁿᵗ</span></h5>",
+              
               t += "<table>", 
               "Y" == a.residential && (t += "<tr>", t += "<th class='emoji'>🏠</th>", t += "<td><small>Residential</small></td>", t += "</tr>"), 
               "Y" == a.commercial && (t += "<tr>", t += "<th class='emoji'>🏪</th>", t += "<td><small>Commerical</small></td>", t += "</tr>"), 
@@ -82,7 +81,6 @@
               t+=`<tr><th><small>5-Room</small></th><td><small>${k}</small></td></tr>`, 
               t+=`<tr><th><small>Other Room Rental</small></th><td><small>${n}</small></td></tr>`, 
               t += "</table>", 
-
 
               t += "<hr style='margin-block-start:0;margin-block-end:0'><p style='text-align:right;margin-block-end:0'><small class='emoji'>🌮 Please buy me a <a href='https://www.buymeacoffee.com/geekcc' target='_blank'>Taco</a>!😋</small></p></div>"
             }
@@ -203,7 +201,6 @@
               
            });
         });
-      }
       </script>
     </body>
 </html>
